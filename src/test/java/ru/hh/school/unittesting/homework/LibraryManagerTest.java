@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class LibraryManagerTest {
+class LibraryManagerTest {
 
   @Mock
   NotificationService notificationService;
@@ -68,10 +67,10 @@ public class LibraryManagerTest {
     assertEquals(5, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("Your account is not active."));
+        .notifyUser(userId, "Your account is not active.");
 
     verify(notificationService, never())
-        .notifyUser(eq(userId), eq("You have borrowed the book: " + bookId));
+        .notifyUser(userId, "You have borrowed the book: " + bookId);
   }
 
   @Test
@@ -104,10 +103,10 @@ public class LibraryManagerTest {
     assertEquals(2, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("You have borrowed the book: " + bookId));
+        .notifyUser(userId, "You have borrowed the book: " + bookId);
 
     verify(notificationService, never())
-        .notifyUser(eq(userId), eq("Your account is not active."));
+        .notifyUser(userId, "Your account is not active.");
   }
 
   @ParameterizedTest
@@ -128,7 +127,7 @@ public class LibraryManagerTest {
     assertEquals(expectedQuantity, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("You have borrowed the book: " + bookId));
+        .notifyUser(userId, "You have borrowed the book: " + bookId);
   }
 
   // Тесты returnBook
@@ -150,7 +149,7 @@ public class LibraryManagerTest {
     assertEquals(2, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("You have returned the book: " + bookId));
+        .notifyUser(userId, "You have returned the book: " + bookId);
   }
 
   @Test
@@ -188,7 +187,7 @@ public class LibraryManagerTest {
     assertEquals(2, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, never())
-        .notifyUser(eq(anotherUser), eq("You have returned the book: " + bookId));
+        .notifyUser(anotherUser, "You have returned the book: " + bookId);
   }
 
   @ParameterizedTest
@@ -210,7 +209,7 @@ public class LibraryManagerTest {
     assertEquals(expectedQuantity, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("You have returned the book: " + bookId));
+        .notifyUser(userId, "You have returned the book: " + bookId);
   }
 
   @Test
@@ -233,7 +232,7 @@ public class LibraryManagerTest {
     assertEquals(1, libraryManager.getAvailableCopies(bookId));
 
     verify(notificationService, times(1))
-        .notifyUser(eq(userId), eq("You have returned the book: " + bookId));
+        .notifyUser(userId, "You have returned the book: " + bookId);
   }
 
 
@@ -245,6 +244,7 @@ public class LibraryManagerTest {
       "10, true,  false, 7.5",
       "10, false, true,  4.0",
       "10, true,  true,  6.0",
+      "0,  false, false, 0.0"
   })
   void testCalculateDynamicLateFeeSomeCombinations(int overdueDays,
                                                    boolean isBestseller,
